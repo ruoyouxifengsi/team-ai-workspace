@@ -4,6 +4,27 @@
 
 **不是 SaaS，不是聊天机器人**——是部署在自己服务器上、绑自己 API key、文件落在自己硬盘上的工作台。
 
+![Workspace overview](docs/screenshots/02-workspace.png)
+
+<details>
+<summary><b>更多截图</b>（点开看登录页 / AI 生成文件 / 设置页 / 反馈后台）</summary>
+
+### 让 AI 读公共资料 + 生成推文 docx，下载链接直接渲染成按钮
+
+![Chat with files](docs/screenshots/03-chat-with-files.png)
+
+### 设置页：今日 token 用量进度条 + 个人 DeepSeek key 绑定
+
+![Settings](docs/screenshots/04-settings.png)
+
+### 登录 / 管理员反馈后台
+
+| 登录 | 反馈后台 |
+|---|---|
+| ![Login](docs/screenshots/01-login.png) | ![Admin feedback](docs/screenshots/05-admin-feedback.png) |
+
+</details>
+
 ---
 
 ## 这玩意儿能干啥
