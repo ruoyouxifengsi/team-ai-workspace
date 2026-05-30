@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.local
+*.db
+*.db-journal
+node_modules/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.vite/
+coverage/
+/data/
+backend/sqlite.db
+# tsc emits beside .tsx — vite already handles transpilation
+frontend/src/**/*.js
+frontend/tests/**/*.js
+# Python package metadata
+*.egg-info/

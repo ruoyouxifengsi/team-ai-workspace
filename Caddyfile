@@ -1,0 +1,17 @@
+{$DOMAIN} {
+    encode zstd gzip
+    handle_path /api/* {
+        rewrite * /api{path}
+        reverse_proxy backend:8000
+    }
+    handle /api/* {
+        reverse_proxy backend:8000
+    }
+    handle {
+        reverse_proxy frontend:80
+    }
+}
+
+# China mainland note: if your domain is on a domestic cloud without an ICP
+# filing, carriers will RESET TLS handshakes on port 443. Workaround is to
+# serve on a non-standard port like :8443 instead. See docs/DEPLOY.md §8.

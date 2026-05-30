@@ -1,0 +1,43 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: sqlite:////data/sqlite.db
+      DATA_DIR: /data
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_INITIAL_PASSWORD: ${ADMIN_INITIAL_PASSWORD}
+      SESSION_TTL_HOURS: ${SESSION_TTL_HOURS}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL}
+      FERNET_KEY: ${FERNET_KEY}
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+  backup:
+    build: ./backup
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
