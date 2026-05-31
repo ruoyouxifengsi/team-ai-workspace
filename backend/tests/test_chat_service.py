@@ -80,3 +80,37 @@ def test_persist_and_build_context_round_trip(client, member_token, env):
     assert msgs[3] == {"role": "tool", "tool_call_id": "call_1",
                        "content": json.dumps({"ok": True}, ensure_ascii=False)}
     assert msgs[4] == {"role": "assistant", "content": "done"}
+
+
+def test_auto_title_from_first_user_message(client, member_token, env):
+    db, user = _alice()
+    c = create_conversation(db, user.id)  # default title "新会话"
+    assert c.title == "新会话"
+    persist_message(db, c, role="user", content="帮我写一份招新推文初稿")
+    db.refresh(c)
+    assert c.title == "帮我写一份招新推文初稿"
+
+
+def test_auto_title_truncates_to_30_chars(client, member_token, env):
+    db, user = _alice()
+    c = create_conversation(db, user.id)
+    long_msg = "abcdefghijabcdefghijabcdefghij1234567890"  # 40 chars
+    persist_message(db, c, role="user", content=long_msg)
+    db.refresh(c)
+    assert c.title == long_msg[:30]
+
+
+def test_auto_title_only_for_default(client, member_token, env):
+    db, user = _alice()
+    c = create_conversation(db, user.id, title="manually set")
+    persist_message(db, c, role="user", content="should not overwrite")
+    db.refresh(c)
+    assert c.title == "manually set"
+
+
+def test_auto_title_uses_first_line_only(client, member_token, env):
+    db, user = _alice()
+    c = create_conversation(db, user.id)
+    persist_message(db, c, role="user", content="第一行标题\n第二行内容也很长很长很长")
+    db.refresh(c)
+    assert c.title == "第一行标题"

@@ -7,6 +7,7 @@ import {
   createConversation,
   deleteConversation,
   listConversations,
+  renameConversation,
   type Conversation,
 } from "../api/chat";
 import ChatPane from "../components/ChatPane";
@@ -42,6 +43,11 @@ export default function WorkspacePage() {
   async function onDelete(id: number) {
     await deleteConversation(id);
     if (activeId === id) setActiveId(null);
+    await loadConvs();
+  }
+
+  async function onRename(id: number, title: string) {
+    await renameConversation(id, title);
     await loadConvs();
   }
 
@@ -99,6 +105,7 @@ export default function WorkspacePage() {
           onSelect={setActiveId}
           onCreate={onCreate}
           onDelete={onDelete}
+          onRename={onRename}
         />
       </AppShell.Aside>
 

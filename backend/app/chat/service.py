@@ -108,6 +108,9 @@ def persist_message(
     # Touch conversation updated_at
     from datetime import datetime
     conv.updated_at = datetime.utcnow()
+    # Auto-title from first user message if still on default placeholder.
+    if role == "user" and conv.title == "新会话" and content:
+        conv.title = content.strip().splitlines()[0][:30] or "新会话"
     db.commit()
     db.refresh(m)
     return m
